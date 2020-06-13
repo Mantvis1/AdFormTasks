@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using AdFrom.Models;
+using AdFrom.Services;
+using AdFrom.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using RestSharp;
 
 namespace AdFrom.Controllers
 {
@@ -11,17 +11,45 @@ namespace AdFrom.Controllers
     [Route("[controller]")]
     public class DataFormationController : ControllerBase
     {
+        private readonly IResponseService _responseService;
+        private readonly IAuthenticationService _authenticationService;
 
-        [HttpGet]
-        public async Task<IActionResult> GetBidsPerWeek()
+        public DataFormationController(IResponseService responseService, IAuthenticationService authenticationService)
         {
-            return BadRequest("Not implemented");
+            _responseService = responseService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBidsWhen()
+        [Route("bids")]
+        public async Task<IActionResult> GetBidsPerWeek()
         {
-            return BadRequest("Not implemented");
+            var requestBody = new RequestBodyPart()
+            {
+                Dimensions = { "date" },
+                Metrics = { "bidRequests" },
+                Filter = new Filter()
+                {
+                    Date = new Date()
+                    {
+                        From = "2020-01-01",
+                        To = "2020-01-20"
+                    }
+                }
+            };
+
+            var client = new RestClient("https://api.adform.com/v1/reportingstats/publisher/reportdata");
+
+            var response = await _responseService.GetResponse(requestBody, client, await _authenticationService.GetToken());
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("Changes")]
+        public async Task<IActionResult> GetBidChnages()
+        {
+            return BadRequest("Notimplemented");
         }
     }
 }

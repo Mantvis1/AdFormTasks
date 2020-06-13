@@ -1,3 +1,4 @@
+using AdFrom.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,8 @@ namespace AdFrom
             {
                 options.SwaggerDoc("Api", new OpenApiInfo { Title = "Api", Version = "v1" });
             });
+
+            services.AddAllDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
