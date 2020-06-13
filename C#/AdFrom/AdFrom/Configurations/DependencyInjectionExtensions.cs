@@ -21,7 +21,8 @@ namespace AdFrom.Configurations
         public static IServiceCollection AddApplicationDependencies(this IServiceCollection service)
         {
             return service
-                .AddScoped<IResponseService, ResponseService>();
+                .AddScoped<IResponseService, ResponseService>()
+                .AddScoped<IAuthenticationService,AuthenticationService>();
         }
     }
 }

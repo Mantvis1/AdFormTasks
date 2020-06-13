@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AdFrom.Models;
-using AdFrom.Services;
 using AdFrom.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using RestSharp;
 
 namespace AdFrom.Controllers
@@ -13,11 +13,16 @@ namespace AdFrom.Controllers
     {
         private readonly IResponseService _responseService;
         private readonly IAuthenticationService _authenticationService;
-
-        public DataFormationController(IResponseService responseService, IAuthenticationService authenticationService)
+        private readonly IConfiguration _configuration;
+        public DataFormationController(
+            IResponseService responseService,
+            IAuthenticationService authenticationService,
+            IConfiguration configuration
+            )
         {
             _responseService = responseService;
             _authenticationService = authenticationService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -38,7 +43,7 @@ namespace AdFrom.Controllers
                 }
             };
 
-            var client = new RestClient("https://api.adform.com/v1/reportingstats/publisher/reportdata");
+            var client = new RestClient(_configuration["ApiLink"]);
 
             var response = await _responseService.GetResponse(requestBody, client, await _authenticationService.GetToken());
 
