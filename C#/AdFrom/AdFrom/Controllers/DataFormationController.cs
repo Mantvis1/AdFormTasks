@@ -9,6 +9,7 @@ namespace AdFrom.Controllers
     public class DataFormationController : ControllerBase
     {
         private readonly IDataFormationService _dataFormationService;
+
         public DataFormationController(IDataFormationService dataFormationService)
         {
             _dataFormationService = dataFormationService;
@@ -22,7 +23,7 @@ namespace AdFrom.Controllers
 
             if (response.Length == 0)
             {
-                return BadRequest("Something wrong");
+                return NotFound("Something wrong");
             }
 
             return Ok(response);
@@ -36,7 +37,7 @@ namespace AdFrom.Controllers
 
             if (response.Length == 0)
             {
-                return BadRequest("Something wrong");
+                return NotFound("Something wrong");
             }
 
             return Ok(response);

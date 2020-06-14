@@ -24,7 +24,9 @@ namespace AdFrom.Configurations
                 .AddScoped<IResponseService, ResponseService>()
                 .AddScoped<IAuthenticationService, AuthenticationService>()
                 .AddScoped<IRequestBuilderService, RequestBuilderService>()
-                .AddScoped<IDataFormationService, DataFormationService>();
+                .AddScoped<IDataFormationService, DataFormationService>()
+                .AddSingleton<ITimeService,TimeService>()
+                .AddScoped<ICalculationService, CalculationService>();
         }
     }
 }
