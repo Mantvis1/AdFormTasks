@@ -6,6 +6,6 @@ namespace AdFrom.Services.Interfaces
 {
     public interface IResponseService
     {
-        Task<APIData> GetResponse(RequestBodyPart requestBody, RestClient client, string token);
+        Task<APIData> GetResponse(RequestBodyPart requestBody);
     }
 }
