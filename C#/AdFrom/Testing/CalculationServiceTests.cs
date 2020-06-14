@@ -1,6 +1,5 @@
 using AdFrom.Services;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
@@ -18,16 +17,6 @@ namespace Testing
                .Build();
 
             _calculationService = new CalculationService(configuration);
-        }
-
-        [Fact]
-        public void BidsPerWeekCounter()
-        {
-          /*  var bidsPerDay = IEnumerable<object>();
-            bidsPerDay.Add(new object(){ "2010-05-11", "200" });
-
-            //   Assert.Equal(10, _calculationService.GetWeekBidsCount(bidsPerDay));
-            Assert.Equal(10, 9);*/
         }
 
         [Theory]

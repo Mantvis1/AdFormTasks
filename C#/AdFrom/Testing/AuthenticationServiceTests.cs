@@ -18,6 +18,7 @@ namespace Testing
 
             _authenticationService = new AuthenticationService(configuration);
         }
+
         [Fact]
         public async void CheckIfAutentificationWorksAsync()
         {

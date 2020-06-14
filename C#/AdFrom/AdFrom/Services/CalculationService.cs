@@ -1,7 +1,6 @@
 ﻿using AdFrom.Models;
 using AdFrom.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AdFrom.Services
@@ -27,27 +26,27 @@ namespace AdFrom.Services
             return weekBidsSum;
         }
 
-        public bool IsAnomalyFound(int firstDay, int secondDay)
+        public bool IsAnomalyFound(int firstDayBids, int secondDayBids)
         {
-            if (firstDay == secondDay)
+            if (firstDayBids == secondDayBids)
             {
                 return false;
             }
 
-            if (firstDay <= 0 || secondDay <= 0)
+            if (firstDayBids <= 0 || secondDayBids <= 0)
             {
                 return true;
             }
 
             int diferenceIndex;
 
-            if (firstDay > secondDay)
+            if (firstDayBids > secondDayBids)
             {
-                diferenceIndex = firstDay / secondDay;
+                diferenceIndex = firstDayBids / secondDayBids;
             }
             else
             {
-                diferenceIndex = secondDay / firstDay;
+                diferenceIndex = secondDayBids / firstDayBids;
             }
 
             return diferenceIndex >= int.Parse(_configuration["IncresmentDecresmentCoeficient"]);

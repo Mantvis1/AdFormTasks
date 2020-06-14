@@ -4,8 +4,8 @@ namespace AdFrom.Models
 {
     public class RequestBodyPart
     {
-        public List<string> Metrics = new List<string>();
-        public List<string> Dimensions = new List<string>();
+        public IList<string> Metrics { get; set; }
+        public IList<string> Dimensions { get; set; }
         public Filter Filter { get; set; }
     }
 }
