@@ -1,6 +1,5 @@
 ﻿using AdFrom.Models;
 using RestSharp;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AdFrom.Services.Interfaces

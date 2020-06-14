@@ -45,15 +45,15 @@ namespace AdFrom.Services
 
             for (var i = 1; i <= daySinceStartCalculations; i++)
             {
-                // _requestBuilderService.AddFilters(_timeService.GetTime(), _timeService.AddDaysToTime(7));
-                _requestBuilderService.AddFilters("2020-01-01", "2020-01-20");
+                _requestBuilderService.AddFilters(_timeService.GetTime(), _timeService.AddDaysToTime(7));
+
                 var requestBody = _requestBuilderService.GetRequestBody();
                 var responseContext = await _responseService.GetResponse(requestBody, client, token);
 
                 bidsPerWeek.Add(new BidsPerWeek
                 {
                     Week = i,
-                    Bids = _calculationService.GetWeekBidsCount(new List<int>() { 10, 20, 30, 40 })
+                    Bids = _calculationService.GetWeekBidsCount(responseContext.ReportData)
                 });
             }
 

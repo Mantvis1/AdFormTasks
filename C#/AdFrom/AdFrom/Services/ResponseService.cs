@@ -14,9 +14,9 @@ namespace AdFrom.Services
                 .AddParameter("Authorization", string.Format("Bearer " + token), ParameterType.HttpHeader)
                 .AddJsonBody(requestBody); 
 
-            var reportData = JsonConvert.DeserializeObject<APIData>((await client.ExecuteAsync(request)).Content);
+            var aPIData = JsonConvert.DeserializeObject<APIData>((await client.ExecuteAsync(request)).Content);
 
-            return reportData;
+            return aPIData;
         }
     }
 }

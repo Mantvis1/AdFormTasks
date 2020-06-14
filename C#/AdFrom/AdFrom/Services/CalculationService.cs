@@ -1,6 +1,6 @@
-﻿using AdFrom.Services.Interfaces;
+﻿using AdFrom.Models;
+using AdFrom.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,9 +15,16 @@ namespace AdFrom.Services
             _configuration = configuration;
         }
 
-        public int GetWeekBidsCount(List<int> bids)
+        public int GetWeekBidsCount(ReportData reportData)
         {
-            return bids.Sum();
+            var weekBidsSum = 0;
+
+            foreach(var row in reportData.Rows)
+            {
+                weekBidsSum += int.Parse(row.Last().ToString());
+            }
+
+            return weekBidsSum;
         }
 
         public bool IsAnomalyFound(int firstDay, int secondDay)
