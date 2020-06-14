@@ -22,7 +22,9 @@ namespace AdFrom.Configurations
         {
             return service
                 .AddScoped<IResponseService, ResponseService>()
-                .AddScoped<IAuthenticationService,AuthenticationService>();
+                .AddScoped<IAuthenticationService, AuthenticationService>()
+                .AddScoped<IRequestBuilderService, RequestBuilderService>()
+                .AddScoped<IDataFormationService, DataFormationService>();
         }
     }
 }

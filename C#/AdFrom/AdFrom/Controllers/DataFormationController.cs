@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
-using AdFrom.Models;
 using AdFrom.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using RestSharp;
 
 namespace AdFrom.Controllers
 {
@@ -11,50 +8,38 @@ namespace AdFrom.Controllers
     [Route("[controller]")]
     public class DataFormationController : ControllerBase
     {
-        private readonly IResponseService _responseService;
-        private readonly IAuthenticationService _authenticationService;
-        private readonly IConfiguration _configuration;
-        public DataFormationController(
-            IResponseService responseService,
-            IAuthenticationService authenticationService,
-            IConfiguration configuration
-            )
+        private readonly IDataFormationService _dataFormationService;
+        public DataFormationController(IDataFormationService dataFormationService)
         {
-            _responseService = responseService;
-            _authenticationService = authenticationService;
-            _configuration = configuration;
+            _dataFormationService = dataFormationService;
         }
 
         [HttpGet]
         [Route("bids")]
         public async Task<IActionResult> GetBidsPerWeek()
         {
-            var requestBody = new RequestBodyPart()
+            var response = await _dataFormationService.GetBidsPerWeekAsync();
+
+            if (response.Length == 0)
             {
-                Dimensions = { "date" },
-                Metrics = { "bidRequests" },
-                Filter = new Filter()
-                {
-                    Date = new Date()
-                    {
-                        From = "2020-01-01",
-                        To = "2020-01-20"
-                    }
-                }
-            };
-
-            var client = new RestClient(_configuration["ApiLink"]);
-
-            var response = await _responseService.GetResponse(requestBody, client, await _authenticationService.GetToken());
+                return BadRequest("Something wrong");
+            }
 
             return Ok(response);
         }
 
         [HttpGet]
-        [Route("Changes")]
+        [Route("changes")]
         public async Task<IActionResult> GetBidChnages()
         {
-            return BadRequest("Notimplemented");
+            var response = await _dataFormationService.GetDatesWithHighChanges();
+
+            if (response.Length == 0)
+            {
+                return BadRequest("Something wrong");
+            }
+
+            return Ok(response);
         }
     }
 }
