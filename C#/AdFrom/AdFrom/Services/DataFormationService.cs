@@ -35,25 +35,24 @@ namespace AdFrom.Services
 
         public async Task<List<BidsPerWeek>> GetBidsPerWeekAsync()
         {
-            var daySinceStartCalculations = 364 / int.Parse(_configuration["WeekDaysCount"]);
+            var weeksCount = int.Parse(_configuration["WeeksInOneYears"]);
             var client = new RestClient(_configuration["ApiLink"]);
             var token = await _authenticationService.GetToken();
             var bidsPerWeek = new List<BidsPerWeek>();
 
-            _requestBuilderService.AddDimensions(new List<string> { "date" });
-            _requestBuilderService.AddMetrics(new List<string> { "bidRequests" });
+            _requestBuilderService.SetDefaultMetricsAndDimensions();
 
-            for (var i = 1; i <= daySinceStartCalculations; i++)
+            for (var weekNumber = 1; weekNumber <= weeksCount; weekNumber++)
             {
-                _requestBuilderService.AddFilters(_timeService.GetTime(), _timeService.AddDaysToTime(7));
+                _requestBuilderService.AddFilters(_timeService.GetTime(), _timeService.AddDaysToTime(int.Parse(_configuration["WeekDaysCount"])));
 
                 var requestBody = _requestBuilderService.GetRequestBody();
-                var responseContext = await _responseService.GetResponse(requestBody, client, token);
+                var responseContent = await _responseService.GetResponse(requestBody, client, token);
 
                 bidsPerWeek.Add(new BidsPerWeek
                 {
-                    Week = i,
-                    Bids = _calculationService.GetWeekBidsCount(responseContext.ReportData)
+                    Week = weekNumber,
+                    Bids = _calculationService.GetWeekBidsCount(responseContent.ReportData)
                 });
             }
 

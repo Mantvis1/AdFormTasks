@@ -15,7 +15,7 @@ namespace AdFrom.Services
 
         public void AddFilters(string from, string to)
         {
-            _requestBody.Filter = new Filter() 
+            _requestBody.Filter = new Filter()
             {
                 Date = new Date()
                 {
@@ -33,6 +33,12 @@ namespace AdFrom.Services
         public RequestBodyPart GetRequestBody()
         {
             return _requestBody;
+        }
+
+        public void SetDefaultMetricsAndDimensions()
+        {
+            _requestBody.Dimensions = new List<string> { "date" };
+            _requestBody.Metrics = new List<string> { "bidRequests" };
         }
 
     }

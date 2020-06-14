@@ -9,10 +9,12 @@ namespace AdFrom.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IConfiguration _configuration;
+
         public AuthenticationService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
+
         public async Task<string> GetToken()
         {
             var response = await new HttpClient().RequestTokenAsync(new TokenRequest

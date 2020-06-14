@@ -9,5 +9,6 @@ namespace AdFrom.Services.Interfaces
         void AddDimensions(List<string> dimensions);
         void AddMetrics(List<string> metrics);
         void AddFilters(string from, string to);
+        void SetDefaultMetricsAndDimensions();
     }
 }
