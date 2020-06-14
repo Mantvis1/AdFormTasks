@@ -2,6 +2,6 @@
 {
     public class Filter
     {
-        public Date Date;
+        public Date Date { get; set; }
     }
 }

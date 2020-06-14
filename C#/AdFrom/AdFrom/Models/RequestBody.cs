@@ -6,6 +6,6 @@ namespace AdFrom.Models
     {
         public List<string> Metrics = new List<string>();
         public List<string> Dimensions = new List<string>();
-        public Filter Filter;
+        public Filter Filter { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Date
     {
-        public string From;
-        public string To;
+        public string From { get; set; }
+        public string To { get; set; }
     }
 }

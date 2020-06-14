@@ -1,7 +1,6 @@
 ﻿using AdFrom.Models;
 using AdFrom.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,20 +61,20 @@ namespace AdFrom.Services
 
             _requestBuilderService.SetDefaultMetricsAndDimensions();
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < int.Parse(_configuration["MounthInOneYears"]); i++)
             {
                 _requestBuilderService.AddFilters(_timeService.GetCurrentTime(), _timeService.AddDaysToTime(30));
 
                 var requestBody = _requestBuilderService.GetRequestBody();
                 var responseContent = await _responseService.GetResponse(requestBody);
 
-                for (var j = 0; j < responseContent.ReportData.Rows.Count - 1; j++)
+                for (var rowIndex = 0; rowIndex < responseContent.ReportData.Rows.Count - 1; rowIndex++)
                 {
                     if (_calculationService
-                        .IsAnomalyFound(int.Parse(responseContent.ReportData.Rows[j].Last().ToString()),
-                        int.Parse(responseContent.ReportData.Rows[j + 1].Last().ToString())))
+                        .IsAnomalyFound(int.Parse(responseContent.ReportData.Rows[rowIndex].Last().ToString()),
+                        int.Parse(responseContent.ReportData.Rows[rowIndex + 1].Last().ToString())))
                     {
-                        anomaliesList.Add(DateTime.Parse(responseContent.ReportData.Rows[j + 1].First().ToString()).ToString("yyyy-MM-dd"));
+                        anomaliesList.Add(DateTime.Parse(responseContent.ReportData.Rows[rowIndex + 1].First().ToString()).ToString("yyyy-MM-dd"));
                     }
                 }
             }
