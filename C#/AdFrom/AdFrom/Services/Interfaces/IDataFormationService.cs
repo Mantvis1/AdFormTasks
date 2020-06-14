@@ -7,6 +7,6 @@ namespace AdFrom.Services.Interfaces
     public interface IDataFormationService
     {
         Task<List<BidsPerWeek>> GetBidsPerWeekAsync();
-        Task<string> GetDatesWithHighChanges();
+        Task<List<string>> GetDatesWithHighChanges();
     }
 }

@@ -11,8 +11,8 @@ namespace AdFrom.Services
         public async Task<APIData> GetResponse(RequestBodyPart requestBody, RestClient client, string token)
         {
             var request = new RestRequest(Method.POST)
-                .AddParameter("Authorization", string.Format("Bearer " + token), ParameterType.HttpHeader)
-                .AddJsonBody(requestBody); 
+                .AddParameter("Authorization", string.Format("Bearer {0}", token), ParameterType.HttpHeader)
+                .AddJsonBody(requestBody);
 
             var aPIData = JsonConvert.DeserializeObject<APIData>((await client.ExecuteAsync(request)).Content);
 

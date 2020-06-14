@@ -2,7 +2,9 @@
 using AdFrom.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using RestSharp;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AdFrom.Services
@@ -44,7 +46,7 @@ namespace AdFrom.Services
 
             for (var weekNumber = 1; weekNumber <= weeksCount; weekNumber++)
             {
-                _requestBuilderService.AddFilters(_timeService.GetTime(), _timeService.AddDaysToTime(int.Parse(_configuration["WeekDaysCount"])));
+                _requestBuilderService.AddFilters(_timeService.GetCurrentTime(), _timeService.AddDaysToTime(int.Parse(_configuration["WeekDaysCount"])));
 
                 var requestBody = _requestBuilderService.GetRequestBody();
                 var responseContent = await _responseService.GetResponse(requestBody, client, token);
@@ -59,9 +61,33 @@ namespace AdFrom.Services
             return bidsPerWeek;
         }
 
-        public async Task<string> GetDatesWithHighChanges()
+        public async Task<List<string>> GetDatesWithHighChanges()
         {
-            return "";
+            var anomaliesList = new List<string>();
+            var client = new RestClient(_configuration["ApiLink"]);
+            var token = await _authenticationService.GetToken();
+
+            _requestBuilderService.SetDefaultMetricsAndDimensions();
+
+            for (int i = 0; i < 12; i++)
+            {
+                _requestBuilderService.AddFilters(_timeService.GetCurrentTime(), _timeService.AddDaysToTime(30));
+
+                var requestBody = _requestBuilderService.GetRequestBody();
+                var responseContent = await _responseService.GetResponse(requestBody, client, token);
+
+                for (var j = 0; j < responseContent.ReportData.Rows.Count - 1; j++)
+                {
+                    if (_calculationService
+                        .IsAnomalyFound(int.Parse(responseContent.ReportData.Rows[j].Last().ToString()),
+                        int.Parse(responseContent.ReportData.Rows[j + 1].Last().ToString())))
+                    {
+                        anomaliesList.Add(DateTime.Parse(responseContent.ReportData.Rows[j + 1].First().ToString()).ToString("yyyy-MM-dd"));
+                    }
+                }
+            }
+
+            return anomaliesList;
         }
     }
 }

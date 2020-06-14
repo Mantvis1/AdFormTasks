@@ -23,10 +23,11 @@ namespace Testing
         [Fact]
         public void BidsPerWeekCounter()
         {
-            var bidsPerDay = new List<int>() { 1, 2, 3, 4 };
+          /*  var bidsPerDay = IEnumerable<object>();
+            bidsPerDay.Add(new object(){ "2010-05-11", "200" });
 
             //   Assert.Equal(10, _calculationService.GetWeekBidsCount(bidsPerDay));
-            Assert.Equal(10, 9);
+            Assert.Equal(10, 9);*/
         }
 
         [Theory]

@@ -9,24 +9,12 @@ namespace AdFrom.Configurations
         public static IServiceCollection AddAllDependencies(this IServiceCollection service)
         {
             return service
-                .AddInfrastructureDependencies()
-                .AddApplicationDependencies();
-        }
-
-        public static IServiceCollection AddInfrastructureDependencies(this IServiceCollection service)
-        {
-            return service;
-        }
-
-        public static IServiceCollection AddApplicationDependencies(this IServiceCollection service)
-        {
-            return service
-                .AddScoped<IResponseService, ResponseService>()
-                .AddScoped<IAuthenticationService, AuthenticationService>()
-                .AddScoped<IRequestBuilderService, RequestBuilderService>()
-                .AddScoped<IDataFormationService, DataFormationService>()
-                .AddScoped<ITimeService,TimeService>()
-                .AddScoped<ICalculationService, CalculationService>();
+                 .AddScoped<IResponseService, ResponseService>()
+                 .AddScoped<IAuthenticationService, AuthenticationService>()
+                 .AddScoped<IRequestBuilderService, RequestBuilderService>()
+                 .AddScoped<IDataFormationService, DataFormationService>()
+                 .AddScoped<ITimeService, TimeService>()
+                 .AddScoped<ICalculationService, CalculationService>();
         }
     }
 }

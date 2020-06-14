@@ -35,9 +35,9 @@ namespace AdFrom.Controllers
         {
             var response = await _dataFormationService.GetDatesWithHighChanges();
 
-            if (response.Length == 0)
+            if (response.Count == 0)
             {
-                return NotFound("Something wrong");
+                return NotFound("Anomalies not found");
             }
 
             return Ok(response);

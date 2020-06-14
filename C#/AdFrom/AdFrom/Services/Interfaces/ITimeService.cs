@@ -2,7 +2,7 @@
 {
     public interface ITimeService 
     {
-        string GetTime();
+        string GetCurrentTime();
         string AddDaysToTime(int days);
     }
 }

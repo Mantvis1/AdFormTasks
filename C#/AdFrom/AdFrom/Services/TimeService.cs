@@ -14,7 +14,7 @@ namespace AdFrom.Services
             return dateTime.AddDays(-1).ToString("yyyy-MM-dd");
         }
 
-        public string GetTime()
+        public string GetCurrentTime()
         {
             return dateTime.ToString("yyyy-MM-dd");
         }
