@@ -1,5 +1,7 @@
 using AdFrom.Services;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.IO;
 using Xunit;
 
 namespace Testing
@@ -10,7 +12,12 @@ namespace Testing
 
         public CalculationServiceTests()
         {
-            _calculationService = new CalculationService();
+            var configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json")
+               .Build();
+
+            _calculationService = new CalculationService(configuration);
         }
 
         [Fact]
@@ -22,12 +29,13 @@ namespace Testing
         }
 
         [Theory]
-        [InlineData(0, 0, false)]
+        [InlineData(30, 30, false)]
         [InlineData(10, 0, true)]
         [InlineData(0, 10, true)]
         [InlineData(150, 50, true)]
         [InlineData(150, 100, false)]
         [InlineData(50, 150, true)]
+        [InlineData(100, 150, false)]
         public void AnomaliesCalculator(int firstDayBidsCount, int secondDayBidsCount, bool expectedResult)
         {
             Assert.Equal(_calculationService.IsAnomalyFound(firstDayBidsCount, secondDayBidsCount), expectedResult);

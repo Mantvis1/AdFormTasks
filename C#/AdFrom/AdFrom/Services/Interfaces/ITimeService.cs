@@ -9,5 +9,7 @@ namespace AdFrom.Services.Interfaces
     {
         public string GetCurrentTime();
         public string GetTimeYearsBeforeNow();
+        string GetTime();
+        string AddDaysToTime(int days);
     }
 }

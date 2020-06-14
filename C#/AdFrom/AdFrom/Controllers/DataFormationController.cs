@@ -21,7 +21,7 @@ namespace AdFrom.Controllers
         {
             var response = await _dataFormationService.GetBidsPerWeekAsync();
 
-            if (response.Length == 0)
+            if (response.Count == 0)
             {
                 return NotFound("Something wrong");
             }

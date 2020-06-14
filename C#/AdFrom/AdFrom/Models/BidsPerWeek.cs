@@ -2,7 +2,7 @@
 {
     public class BidsPerWeek
     {
-        public int WeekId { get; set; }
-        public int BidsCount { get; set; }
+        public int Week { get; set; }
+        public int Bids { get; set; }
     }
 }

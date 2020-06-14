@@ -1,4 +1,5 @@
-﻿using AdFrom.Services.Interfaces;
+﻿using AdFrom.Models;
+using AdFrom.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using RestSharp;
 using System.Collections.Generic;
@@ -29,18 +30,31 @@ namespace AdFrom.Services
             _timeService = timeService;
         }
 
-        public async Task<string> GetBidsPerWeekAsync()
+        public async Task<List<BidsPerWeek>> GetBidsPerWeekAsync()
         {
+            var daySinceStartCalculations = 364 / int.Parse(_configuration["WeekDaysCount"]);
+            var client = new RestClient(_configuration["ApiLink"]);
+            var token = await _authenticationService.GetToken();
+            var bidsPerWeek = new List<BidsPerWeek>();
+
             _requestBuilderService.AddDimensions(new List<string> { "date" });
             _requestBuilderService.AddMetrics(new List<string> { "bidRequests" });
-            _requestBuilderService.AddFilters(_timeService.GetTimeYearsBeforeNow(), _timeService.GetCurrentTime());
-            var requestBody = _requestBuilderService.GetRequestBody();
 
-            var client = new RestClient(_configuration["ApiLink"]);
+            for (var i = 1; i <= daySinceStartCalculations; i++)
+            {
+                _requestBuilderService.AddFilters(_timeService.GetTime(), _timeService.AddDaysToTime(7));
 
-            var response = await _responseService.GetResponse(requestBody, client, await _authenticationService.GetToken());
+                var requestBody = _requestBuilderService.GetRequestBody();
+               // var response = await _responseService.GetResponse(requestBody, client, token);
 
-            return response;
+                bidsPerWeek.Add(new BidsPerWeek
+                {
+                    Week = i,
+                    Bids = 300
+                }) ;
+            }
+
+            return bidsPerWeek;
         }
 
         public async Task<string> GetDatesWithHighChanges()
