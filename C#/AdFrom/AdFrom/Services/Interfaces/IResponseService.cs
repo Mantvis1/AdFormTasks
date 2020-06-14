@@ -1,11 +1,12 @@
 ﻿using AdFrom.Models;
 using RestSharp;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AdFrom.Services.Interfaces
 {
     public interface IResponseService
     {
-        Task<string> GetResponse(RequestBodyPart requestBody, RestClient client, string token);
+        Task<APIData> GetResponse(RequestBodyPart requestBody, RestClient client, string token);
     }
 }

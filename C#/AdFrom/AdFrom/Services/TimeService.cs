@@ -5,7 +5,7 @@ namespace AdFrom.Services
 {
     public class TimeService : ITimeService
     {
-        private readonly DateTime dateTime = new DateTime();
+        private readonly DateTime dateTime = DateTime.Today.AddYears(-1).AddDays(1);
 
         public string GetCurrentTime()
         {

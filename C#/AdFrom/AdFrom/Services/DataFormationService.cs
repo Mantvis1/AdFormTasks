@@ -14,13 +14,15 @@ namespace AdFrom.Services
         private readonly IConfiguration _configuration;
         private readonly IRequestBuilderService _requestBuilderService;
         private readonly ITimeService _timeService;
+        private readonly ICalculationService _calculationService;
 
         public DataFormationService(
            IResponseService responseService,
            IAuthenticationService authenticationService,
            IConfiguration configuration,
            IRequestBuilderService requestBuilderService,
-           ITimeService timeService
+           ITimeService timeService,
+           ICalculationService calculationService
            )
         {
             _responseService = responseService;
@@ -28,6 +30,7 @@ namespace AdFrom.Services
             _configuration = configuration;
             _requestBuilderService = requestBuilderService;
             _timeService = timeService;
+            _calculationService = calculationService;
         }
 
         public async Task<List<BidsPerWeek>> GetBidsPerWeekAsync()
@@ -42,16 +45,16 @@ namespace AdFrom.Services
 
             for (var i = 1; i <= daySinceStartCalculations; i++)
             {
-                _requestBuilderService.AddFilters(_timeService.GetTime(), _timeService.AddDaysToTime(7));
-
+                // _requestBuilderService.AddFilters(_timeService.GetTime(), _timeService.AddDaysToTime(7));
+                _requestBuilderService.AddFilters("2020-01-01", "2020-01-20");
                 var requestBody = _requestBuilderService.GetRequestBody();
-               // var response = await _responseService.GetResponse(requestBody, client, token);
+                var responseContext = await _responseService.GetResponse(requestBody, client, token);
 
                 bidsPerWeek.Add(new BidsPerWeek
                 {
                     Week = i,
-                    Bids = 300
-                }) ;
+                    Bids = _calculationService.GetWeekBidsCount(new List<int>() { 10, 20, 30, 40 })
+                });
             }
 
             return bidsPerWeek;
